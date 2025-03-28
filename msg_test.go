@@ -1590,7 +1590,7 @@ func TestMsg_ReplyToFormat(t *testing.T) {
 			t.Errorf("ReplyToFormat should fail with invalid address")
 		}
 	})
-	// https://github.com/wneessen/go-mail/issues/440
+	// https://github.com/d4rk5eed/go-mail/issues/440
 	t.Run("ReplyToFormat with special characters must not double encode", func(t *testing.T) {
 		message := NewMsg()
 		if message == nil {
@@ -1847,7 +1847,7 @@ func TestMsg_SetUserAgent(t *testing.T) {
 		if message == nil {
 			t.Fatal("message is nil")
 		}
-		want := fmt.Sprintf("go-mail v%s // https://github.com/wneessen/go-mail", VERSION)
+		want := fmt.Sprintf("go-mail v%s // https://github.com/d4rk5eed/go-mail", VERSION)
 		message.checkUserAgent()
 		checkGenHeader(t, message, HeaderUserAgent, "SetUserAgent", 0, 1, want)
 		checkGenHeader(t, message, HeaderXMailer, "SetUserAgent", 0, 1, want)
@@ -4687,7 +4687,7 @@ func TestMsg_AttachReader(t *testing.T) {
 	})
 	// Tests the Msg.AttachReader methods with consecutive calls to Msg.WriteTo to make sure
 	// the attachments are not lost.
-	// https://github.com/wneessen/go-mail/issues/110
+	// https://github.com/d4rk5eed/go-mail/issues/110
 	t.Run("AttachReader with consecutive writes", func(t *testing.T) {
 		teststring := "This is a test string"
 		message := testMessage(t)
@@ -4782,7 +4782,7 @@ func TestMsg_AttachReadSeeker(t *testing.T) {
 	})
 	// Tests the Msg.AttachReadSeeker methods with consecutive calls to Msg.WriteTo to make sure
 	// the attachments are not lost.
-	// https://github.com/wneessen/go-mail/issues/110
+	// https://github.com/d4rk5eed/go-mail/issues/110
 	t.Run("AttachReadSeeker with consecutive writes", func(t *testing.T) {
 		teststring := []byte("This is a test string")
 		message := testMessage(t)
@@ -5221,7 +5221,7 @@ func TestMsg_EmbedReader(t *testing.T) {
 	})
 	// Tests the Msg.EmbedReader methods with consecutive calls to Msg.WriteTo to make sure
 	// the attachments are not lost.
-	// https://github.com/wneessen/go-mail/issues/110
+	// https://github.com/d4rk5eed/go-mail/issues/110
 	t.Run("EmbedReader with consecutive writes", func(t *testing.T) {
 		teststring := "This is a test string"
 		message := testMessage(t)
@@ -5316,7 +5316,7 @@ func TestMsg_EmbedReadSeeker(t *testing.T) {
 	})
 	// Tests the Msg.EmbedReadSeeker methods with consecutive calls to Msg.WriteTo to make sure
 	// the attachments are not lost.
-	// https://github.com/wneessen/go-mail/issues/110
+	// https://github.com/d4rk5eed/go-mail/issues/110
 	t.Run("EmbedReadSeeker with consecutive writes", func(t *testing.T) {
 		teststring := []byte("This is a test string")
 		message := testMessage(t)
@@ -7006,9 +7006,9 @@ func TestMsg_checkUserAgent(t *testing.T) {
 		message := testMessage(t)
 		message.checkUserAgent()
 		checkGenHeader(t, message, HeaderUserAgent, "checkUserAgent", 0, 1,
-			fmt.Sprintf("go-mail v%s // https://github.com/wneessen/go-mail", VERSION))
+			fmt.Sprintf("go-mail v%s // https://github.com/d4rk5eed/go-mail", VERSION))
 		checkGenHeader(t, message, HeaderXMailer, "checkUserAgent", 0, 1,
-			fmt.Sprintf("go-mail v%s // https://github.com/wneessen/go-mail", VERSION))
+			fmt.Sprintf("go-mail v%s // https://github.com/d4rk5eed/go-mail", VERSION))
 	})
 	t.Run("noDefaultUserAgent should return empty string", func(t *testing.T) {
 		message := testMessage(t)

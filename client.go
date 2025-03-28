@@ -15,8 +15,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/wneessen/go-mail/log"
-	"github.com/wneessen/go-mail/smtp"
+	"github.com/d4rk5eed/go-mail/pkg/log"
+	"github.com/d4rk5eed/go-mail/smtp"
 )
 
 const (
@@ -1279,6 +1279,11 @@ func (c *Client) auth(client *smtp.Client, isEnc bool) error {
 				return ErrXOauth2AuthNotSupported
 			}
 			smtpAuth = smtp.XOAuth2Auth(c.user, c.pass)
+		case SMTPAuthNTLM:
+			if !strings.Contains(smtpAuthType, string(SMTPAuthNTLM)) {
+				return ErrNTLMAuthNotSupported
+			}
+			smtpAuth = smtp.NTLMAuth(c.host, c.user, c.pass, smtp.NTLMVersion1)
 		case SMTPAuthSCRAMSHA1:
 			if !strings.Contains(smtpAuthType, string(SMTPAuthSCRAMSHA1)) {
 				return ErrSCRAMSHA1AuthNotSupported

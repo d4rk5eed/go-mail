@@ -21,7 +21,7 @@ import (
 
 	"golang.org/x/text/secure/precis"
 
-	"github.com/wneessen/go-mail/internal/pbkdf2"
+	"github.com/d4rk5eed/go-mail/pkg/pbkdf2"
 )
 
 // scramAuth represents a SCRAM (Salted Challenge Response Authentication Mechanism) client and
