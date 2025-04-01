@@ -24,8 +24,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/wneessen/go-mail/log"
-	"github.com/wneessen/go-mail/smtp"
+	"github.com/d4rk5eed/go-mail/pkg/log"
+	"github.com/d4rk5eed/go-mail/smtp"
 )
 
 const (
@@ -766,6 +766,7 @@ func TestNewClient(t *testing.T) {
 			{"SCRAM-SHA-256", WithSMTPAuth(SMTPAuthSCRAMSHA256), SMTPAuthSCRAMSHA256},
 			{"SCRAM-SHA-256-PLUS", WithSMTPAuth(SMTPAuthSCRAMSHA256PLUS), SMTPAuthSCRAMSHA256PLUS},
 			{"XOAUTH2", WithSMTPAuth(SMTPAuthXOAUTH2), SMTPAuthXOAUTH2},
+			{"NTLM", WithSMTPAuth(SMTPAuthNTLM), SMTPAuthNTLM},
 		}
 		for _, tt := range tests {
 			t.Run(tt.name, func(t *testing.T) {
@@ -1390,6 +1391,7 @@ func TestClient_SetSMTPAuth(t *testing.T) {
 			{"SCRAM-SHA-256", SMTPAuthSCRAMSHA256, SMTPAuthSCRAMSHA256},
 			{"SCRAM-SHA-256-PLUS", SMTPAuthSCRAMSHA256PLUS, SMTPAuthSCRAMSHA256PLUS},
 			{"XOAUTH2", SMTPAuthXOAUTH2, SMTPAuthXOAUTH2},
+			{"NTLM", SMTPAuthNTLM, SMTPAuthNTLM},
 		}
 
 		client, err := NewClient(DefaultHost)
@@ -1423,6 +1425,7 @@ func TestClient_SetSMTPAuth(t *testing.T) {
 			{"SCRAM-SHA-256", SMTPAuthSCRAMSHA256, SMTPAuthSCRAMSHA256},
 			{"SCRAM-SHA-256-PLUS", SMTPAuthSCRAMSHA256PLUS, SMTPAuthSCRAMSHA256PLUS},
 			{"XOAUTH2", SMTPAuthXOAUTH2, SMTPAuthXOAUTH2},
+			{"NTLM", SMTPAuthNTLM, SMTPAuthNTLM},
 		}
 
 		for _, tt := range tests {
@@ -1497,6 +1500,7 @@ func TestClient_SetSMTPAuthCustom(t *testing.T) {
 				"*smtp.scramAuth",
 			},
 			{"XOAUTH2", smtp.XOAuth2Auth("", ""), "*smtp.xoauth2Auth"},
+			{"NTLM", smtp.NTLMAuth("", "", "", 1), "*smtp.ntlmAuth"},
 		}
 		for _, tt := range tests {
 			t.Run(tt.name, func(t *testing.T) {
@@ -2217,7 +2221,7 @@ func TestClient_DialAndSendWithContext(t *testing.T) {
 			t.Fatalf("failed to dial and send: %s", err)
 		}
 	})
-	// https://github.com/wneessen/go-mail/commit/4641da450f5e3b3726e01b1cf03c88361cf49c8f
+	// https://github.com/d4rk5eed/go-mail/commit/4641da450f5e3b3726e01b1cf03c88361cf49c8f
 	t.Run("DialAndSendWithContext with nil messages", func(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
@@ -2337,7 +2341,7 @@ func TestClient_DialAndSendWithContext(t *testing.T) {
 			t.Errorf("client was supposed to fail on dial")
 		}
 	})
-	// https://github.com/wneessen/go-mail/issues/380
+	// https://github.com/d4rk5eed/go-mail/issues/380
 	t.Run("concurrent sending via DialAndSendWithContext", func(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
@@ -2377,7 +2381,7 @@ func TestClient_DialAndSendWithContext(t *testing.T) {
 		}
 		wg.Wait()
 	})
-	// https://github.com/wneessen/go-mail/issues/385
+	// https://github.com/d4rk5eed/go-mail/issues/385
 	t.Run("concurrent sending via DialAndSendWithContext on receiver func", func(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
@@ -2437,6 +2441,7 @@ func TestClient_auth(t *testing.T) {
 		{"SCRAM-SHA-256", SMTPAuthSCRAMSHA256},
 		{"SCRAM-SHA-256-PLUS", SMTPAuthSCRAMSHA256PLUS},
 		{"XOAUTH2", SMTPAuthXOAUTH2},
+		{"NTLM", SMTPAuthNTLM},
 	}
 
 	tlsConfig := tls.Config{InsecureSkipVerify: true}
@@ -2630,7 +2635,7 @@ func TestClient_auth(t *testing.T) {
 			t.Fatalf("client should have failed to connect")
 		}
 	})
-	// https://github.com/wneessen/go-mail/issues/428
+	// https://github.com/d4rk5eed/go-mail/issues/428
 	t.Run("auth with custom auth type should succeed", func(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
@@ -2665,7 +2670,7 @@ func TestClient_auth(t *testing.T) {
 			t.Errorf("failed to send message: %s", err)
 		}
 	})
-	// https://github.com/wneessen/go-mail/issues/428
+	// https://github.com/d4rk5eed/go-mail/issues/428
 	t.Run("auth with custom auth type should fail", func(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
@@ -2696,7 +2701,7 @@ func TestClient_auth(t *testing.T) {
 			t.Fatalf("client should have failed to connect")
 		}
 	})
-	// https://github.com/wneessen/go-mail/issues/428
+	// https://github.com/d4rk5eed/go-mail/issues/428
 	t.Run("auth with custom auth type overridden by SetCustomAuth", func(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
@@ -2811,7 +2816,7 @@ func TestClient_Send(t *testing.T) {
 			t.Errorf("failed to send email: %s", err)
 		}
 	})
-	// https://github.com/wneessen/go-mail/commit/4641da450f5e3b3726e01b1cf03c88361cf49c8f
+	// https://github.com/d4rk5eed/go-mail/commit/4641da450f5e3b3726e01b1cf03c88361cf49c8f
 	t.Run("connect and try to send email but message is nil", func(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()

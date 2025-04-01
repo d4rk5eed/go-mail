@@ -33,7 +33,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/wneessen/go-mail/log"
+	"github.com/d4rk5eed/go-mail/pkg/log"
 )
 
 var (
@@ -310,7 +310,11 @@ func (c *Client) Auth(a Auth) error {
 		var msg []byte
 		switch code {
 		case 334:
-			msg, err = encoding.DecodeString(msg64)
+			if msg64 == "NTLM supported" {
+				msg = []byte(msg64)
+			} else {
+				msg, err = encoding.DecodeString(msg64)
+			}
 		case 235:
 			// the last message isn't base64 because it isn't a challenge
 			msg = []byte(msg64)

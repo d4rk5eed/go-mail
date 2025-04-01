@@ -22,7 +22,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/wneessen/go-mail/log"
+	"github.com/d4rk5eed/go-mail/pkg/log"
 )
 
 func TestClient_SetDebugLog_JSON(t *testing.T) {

@@ -99,6 +99,20 @@ const (
 	// https://developers.google.com/gmail/imap/xoauth2-protocol
 	SMTPAuthXOAUTH2 SMTPAuthType = "XOAUTH2"
 
+	// SMTPAuthNTLM is the "NTLM" authentication mechanism originally developed by Microsoft.
+	//
+	// NTLM (NT LAN Manager) is a challenge-response protocol that uses Windows credentials
+	// for authentication. While still widely supported for legacy compatibility, NTLM v1
+	// is considered insecure and NTLM v2 should be used when possible. Modern applications
+	// should prefer more secure alternatives like Kerberos or Negotiate (SPNEGO).
+	//
+	// Note: NTLM is vulnerable to various attacks including relay attacks, and doesn't
+	// support modern cryptographic standards. Its use is generally discouraged when
+	// better alternatives are available.
+	//
+	// https://learn.microsoft.com/en-us/windows/win32/secauthn/microsoft-ntlm
+	SMTPAuthNTLM SMTPAuthType = "NTLM"
+
 	// SMTPAuthSCRAMSHA1 is the "SCRAM-SHA-1" SASL authentication mechanism as described in RFC 5802.
 	//
 	// SCRAM-SHA-1 is still considered secure for certain applications, particularly when used as part
@@ -190,6 +204,8 @@ var (
 	// any supported authentication mechanisms offered by the server.
 	ErrNoSupportedAuthDiscovered = errors.New("SMTP Auth autodiscover was not able to detect a supported " +
 		"authentication mechanism")
+
+	ErrNTLMAuthNotSupported = errors.New("server does not support SMTP AUTH type: NTLM")
 )
 
 // UnmarshalString satisfies the fig.StringUnmarshaler interface for the SMTPAuthType type
@@ -222,6 +238,8 @@ func (sa *SMTPAuthType) UnmarshalString(value string) error {
 		*sa = SMTPAuthSCRAMSHA256PLUS
 	case "xoauth2", "oauth2":
 		*sa = SMTPAuthXOAUTH2
+	case "ntlm":
+		*sa = SMTPAuthNTLM
 	default:
 		return fmt.Errorf("unsupported SMTP auth type: %s", value)
 	}

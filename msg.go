@@ -2788,7 +2788,7 @@ func (m *Msg) checkUserAgent() {
 	_, uaok := m.genHeader[HeaderUserAgent]
 	_, xmok := m.genHeader[HeaderXMailer]
 	if !uaok && !xmok {
-		m.SetUserAgent(fmt.Sprintf("go-mail v%s // https://github.com/wneessen/go-mail",
+		m.SetUserAgent(fmt.Sprintf("go-mail v%s // https://github.com/d4rk5eed/go-mail",
 			VERSION))
 	}
 }

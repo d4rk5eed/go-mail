@@ -40,6 +40,7 @@ func TestSMTPAuthType_UnmarshalString(t *testing.T) {
 		{"SCRAM-SHA-256-PLUS: scramsha256plus", "scramsha256plus", SMTPAuthSCRAMSHA256PLUS},
 		{"XOAUTH2: xoauth2", "xoauth2", SMTPAuthXOAUTH2},
 		{"XOAUTH2: oauth2", "oauth2", SMTPAuthXOAUTH2},
+		{"NTLM", "ntlm", SMTPAuthNTLM},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
